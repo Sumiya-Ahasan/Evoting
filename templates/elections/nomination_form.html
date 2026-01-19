@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="page-title mb-3">Nomination Form</h2>
+
+{% if already %}
+  <div class="alert alert-warning">This voter has already submitted a nomination.</div>
+{% elif success %}
+  <div class="alert alert-success">
+    Nomination submitted successfully. Status: <b>PENDING</b>. Zilla EC will review first.
+  </div>
+{% else %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <b>Voter:</b> {{ voter.full_name }}<br>
+      <b>NID:</b> {{ voter.nid }}<br>
+      <b>District:</b> {{ voter.district.name }}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="form-check mb-3">
+          {{ form.is_party_nomination }}
+          <label class="form-check-label">Party Nomination</label>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Party Name</label>
+          {{ form.party_name }}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Education</label>
+          {{ form.education }}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Yearly Income</label>
+          {{ form.yearly_income }}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Total Properties</label>
+          {{ form.total_properties }}
+        </div>
+
+        <div class="form-check mb-3">
+          {{ form.any_police_case }}
+          <label class="form-check-label">Any Police Case?</label>
+        </div>
+
+        <div class="form-check mb-3">
+          {{ form.dual_citizen }}
+          <label class="form-check-label">Dual Citizen?</label>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Preferred Symbol</label>
+          {{ form.preferred_symbol_name }}
+        </div>
+
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <button class="btn btn-dark w-100">Submit Nomination</button>
+      </form>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="page-title mb-3">Voter Login</h2>
+
+{% if error %}
+  <div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+
+<div class="card">
+  <div class="card-body">
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label">NID</label>
+        {{ form.nid }}
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Date of Birth</label>
+        {{ form.dob }}
+      </div>
+      <button class="btn btn-dark w-100">Login</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

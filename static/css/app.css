@@ -1,0 +1,15 @@
+body { background: #f6f7fb; }
+
+.card { border-radius: 14px; }
+.navbar-brand { letter-spacing: 0.2px; }
+
+.form-control, .form-select {
+  border-radius: 10px;
+  padding: 0.65rem 0.85rem;
+}
+
+.btn { border-radius: 10px; }
+.badge { font-size: 0.78rem; }
+
+.page-title { font-weight: 800; }
+.subtle { color: #6c757d; }

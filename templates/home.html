@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+  <div>
+    <h2 class="page-title mb-1">Bangladesh Election Portal</h2>
+    <div class="subtle">Dashboard for nomination, voting and live result updates.</div>
+  </div>
+  <div class="d-flex gap-2">
+    <a class="btn btn-outline-dark" href="/elections/results/">Live Results</a>
+    <a class="btn btn-dark" href="/elections/ballot/">Go to Ballot</a>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-4">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Important Dates</h5>
+          <span class="badge bg-primary">Schedule</span>
+        </div>
+        <hr>
+        <ul class="mb-0">
+          <li>Nomination Deadline: 25 July</li>
+          <li>Zilla EC Review: 26–27 July</li>
+          <li>Admin Final Approval: 28 July</li>
+          <li>Voting Day: 5 August</li>
+          <li>Live Result: Real-time</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Notices</h5>
+          <span class="badge bg-warning text-dark">Info</span>
+        </div>
+        <hr>
+        <ul class="mb-0">
+          <li>One voter can vote only once per election.</li>
+          <li>Only your district’s candidates appear in the ballot.</li>
+          <li>Nomination requires EC recommendation + Admin final approval.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Quick Actions</h5>
+          <span class="badge bg-success">Fast</span>
+        </div>
+        <hr>
+        <div class="d-grid gap-2">
+          <a class="btn btn-outline-primary" href="/elections/nomination-check/">Check Nomination Eligibility</a>
+          <a class="btn btn-outline-secondary" href="/elections/voter-area-check/">Check Voter Area</a>
+          <a class="btn btn-outline-dark" href="/accounts/voter-login/">Voter Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if voter_logged_in and voter_obj %}
+<div class="card mt-3 border-success">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>
+        <h5 class="mb-1">Voter Profile</h5>
+        <div class="subtle">{{ voter_obj.full_name }} • {{ voter_obj.nid }}</div>
+      </div>
+      <div class="d-flex gap-2">
+        <a class="btn btn-success" href="/elections/ballot/">Open Ballot</a>
+        <a class="btn btn-outline-dark" href="/elections/my-result/">My Result</a>
+      </div>
+    </div>
+    <hr>
+    <div class="row g-2">
+      <div class="col-md-4"><b>District:</b> {{ voter_obj.district.name }}</div>
+      <div class="col-md-4"><b>Upazila:</b> {{ voter_obj.upazila.name }}</div>
+      <div class="col-md-4"><b>DOB:</b> {{ voter_obj.dob }}</div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

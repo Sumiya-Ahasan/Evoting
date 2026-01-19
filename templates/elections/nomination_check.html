@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="page-title mb-3">Nomination Eligibility Check</h2>
+
+<div class="card">
+  <div class="card-body">
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label">NID Number</label>
+        <input class="form-control" name="nid" required>
+      </div>
+      <button class="btn btn-dark w-100">Check</button>
+    </form>
+  </div>
+</div>
+
+{% if message %}
+  <div class="alert mt-3 {% if eligible %}alert-success{% else %}alert-danger{% endif %}">
+    {{ message }}
+  </div>
+{% endif %}
+
+{% if eligible %}
+  <a class="btn btn-success mt-2" href="/elections/nomination-submit/">Submit Nomination Form</a>
+{% endif %}
+{% endblock %}

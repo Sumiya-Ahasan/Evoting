@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="page-title mb-2">EC Dashboard</h2>
+
+{% if error %}
+  <div class="alert alert-warning">{{ error }}</div>
+{% else %}
+  <div class="alert alert-info">
+    District: <b>{{ profile.district.name }}</b>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="mb-3">District Nominations</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+          <thead>
+            <tr>
+              <th>Candidate</th>
+              <th>NID</th>
+              <th>Type</th>
+              <th>Preferred Symbol</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for n in nominations %}
+            <tr>
+              <td>{{ n.voter.full_name }}</td>
+              <td>{{ n.voter.nid }}</td>
+              <td>{% if n.is_party_nomination %}Party ({{ n.party_name }}){% else %}Self{% endif %}</td>
+              <td>{{ n.preferred_symbol_name }}</td>
+              <td>
+                <span class="badge
+                  {% if n.status == 'APPROVED' %}bg-success
+                  {% elif n.status == 'EC_RECOMMENDED' %}bg-info text-dark
+                  {% elif n.status == 'REJECTED' %}bg-danger
+                  {% else %}bg-secondary{% endif %}">
+                  {{ n.status }}
+                </span>
+              </td>
+              <td class="d-flex gap-2">
+                {% if n.status == "PENDING" %}
+                  <form method="post" action="/accounts/ec-recommend/{{ n.id }}/">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-outline-success">Recommend</button>
+                  </form>
+                  <form method="post" action="/accounts/ec-reject/{{ n.id }}/">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-outline-danger">Reject</button>
+                  </form>
+                {% else %}
+                  <span class="text-muted small">No action</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-center text-muted">No nominations</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subtle">
+        Final Approval & Symbol Assignment: use <b>/admin</b> → Candidate → set status <b>APPROVED</b> and assign a symbol.
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="page-title mb-3">Voter Area Check</h2>
+
+<div class="card">
+  <div class="card-body">
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label">NID Number</label>
+        <input class="form-control" name="nid" required>
+      </div>
+      <button class="btn btn-dark w-100">Check</button>
+    </form>
+  </div>
+</div>
+
+{% if message %}
+  <div class="alert alert-info mt-3">{{ message }}</div>
+{% endif %}
+
+{% if area %}
+  <div class="alert alert-success mt-3">
+    {{ voter.full_name }} ({{ voter.nid }}) area: <b>{{ area }}</b>
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+  <div>
+    <h2 class="page-title mb-1">Ballot Paper</h2>
+    <div class="subtle">{{ election.name }}</div>
+  </div>
+  <div class="d-flex gap-2">
+    <a class="btn btn-outline-dark" href="/elections/results/">Live Results</a>
+    <a class="btn btn-outline-secondary" href="/elections/my-result/">My Result</a>
+  </div>
+</div>
+
+{% if error %}
+  <div class="alert alert-danger">{{ error }}</div>
+{% else %}
+
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="row g-2">
+      <div class="col-md-4"><b>Voter:</b> {{ voter.full_name }}</div>
+      <div class="col-md-4"><b>NID:</b> {{ voter.nid }}</div>
+      <div class="col-md-4"><b>Area:</b> {{ voter.upazila.name }}, {{ voter.district.name }}</div>
+    </div>
+  </div>
+</div>
+
+{% if my_vote %}
+<div class="alert alert-success">
+  <b>Vote submitted successfully.</b><br>
+  You voted for: <b>{{ my_vote.candidate.voter.full_name }}</b>
+  {% if my_vote.candidate.assigned_symbol %} ({{ my_vote.candidate.assigned_symbol.name }}){% endif %}
+</div>
+{% else %}
+<div class="alert alert-warning">
+  Please select your preferred candidate and submit your vote. You can vote only once.
+</div>
+{% endif %}
+
+<div class="row g-3">
+  {% for c in candidates %}
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm {% if my_vote and my_vote.candidate.id == c.id %}border-success{% endif %}">
+      <div class="card-body text-center">
+        <div class="mb-2">
+          <span class="badge bg-dark">
+            {% if c.assigned_symbol %}{{ c.assigned_symbol.name }}{% else %}Symbol N/A{% endif %}
+          </span>
+        </div>
+
+        <h5 class="mb-1">{{ c.voter.full_name }}</h5>
+        <div class="subtle mb-3">District: {{ c.district.name }}</div>
+
+        {% if my_vote %}
+          {% if my_vote.candidate.id == c.id %}
+            <span class="badge bg-success">✔ Selected</span>
+          {% else %}
+            <span class="badge bg-secondary">Locked</span>
+          {% endif %}
+        {% else %}
+          <form method="post" action="/elections/cast-vote/{{ c.id }}/">
+            {% csrf_token %}
+            <button class="btn btn-primary w-100">Vote</button>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    <div class="alert alert-info">No approved candidates found for your district.</div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endif %}
+{% endblock %}
