@@ -1,4 +1,3 @@
-@"
 # Python
 __pycache__/
 *.pyc
@@ -19,4 +18,3 @@ media/
 # OS
 .DS_Store
 Thumbs.db
-"@ | Out-File .gitignore -Encoding utf8
